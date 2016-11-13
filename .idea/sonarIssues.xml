@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="issues">
+    <option name="index">
+      <map>
+        <entry key="/Dummy.txt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="/a.dummy">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="/fragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="C:/Projects/sa3/workspaces/dev3/.intellij/.idea/misc.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="C:/Projects/sa3/workspaces/dev3/.intellij/.idea/workspace.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="C:/Projects/sa3/workspaces/dev3/src/java/client/src/com/bmw/sa3/client/dlg/base/SearchPanelOrderInfo.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="C:/Projects/sa3/workspaces/trunk/.intellij/build.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="C:/Projects/sa3/workspaces/trunk/src/java/client_nsc/client_zo/tst/com/bmw/sa3/client/cmd/clientaction/dms/DmsActionExt.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="C:/Projects/sa3/workspaces/trunk/src/java/client_nsc/client_zo/tst/com/bmw/sa3/client/cmd/clientaction/dms/DmsActionTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="C:/Projects/sa3/workspaces/trunk/src/java/server_ejb/src/com/bmw/sa3/server/ejb/bpo/semcrm/CreateSemCrmAccountHelper.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="C:/Projects/sa3/workspaces/trunk/src/java/server_ejb/src/com/bmw/sa3/server/util/Finder.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/resources/META-INF/plugin.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/resources/vm-template.properties">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/org/intellij/plugins/junitgen/JUnitGeneratorFileCreator.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/org/intellij/plugins/junitgen/action/JUnitGeneratorActionHandler.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/org/intellij/plugins/junitgen/bean/MethodComposite.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/org/intellij/plugins/junitgen/bean/Parameter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/org/intellij/plugins/junitgen/bean/TemplateEntry.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/test/org/intellij/plugins/junitgen/action/JUnitGeneratorActionHandlerTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/test/sandbox/Example.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/test/sandbox/ExampleTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/test/sandbox/MockStaticMethodTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/test/sandbox/PowerMockExample.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/test/test/sandbox/ExampleTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/test/test/sandbox/PowerMockExampleTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/test/tst/sandbox/ExampleTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/test/tst/sandbox/PowerMockExampleTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="[SA Test- WLS12​] CONSOLE - SA Test- WLS12​ 1">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="[SA Test- WLS12​] CONSOLE - SA Test- WLS12​ 2">
+          <value>
+            <set />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

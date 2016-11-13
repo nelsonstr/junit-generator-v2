@@ -1,0 +1,83 @@
+<idea-plugin version="2" url="http://code.google.com/p/junit-generator-v2">
+  <name>JUnitGenerator V2.0</name>
+  <id>org.intellij.plugins.junitgen</id>
+  <description><![CDATA[This plugin generates JUnit tests from right click 'Generate...' menu while focused
+    on a java class. The unit test output code can be customized using a provided velocity template to format
+    the code based on the origin class.
+    <p>If a unit test is created where one already exists, the user is prompted for overwrite or merge operation. The merge operation
+    allows the user to selectively create the target file content.</p>
+    <p>A future revision will allow the user to generate their own test case macros.</p>]]>
+  </description>
+  <version>2.0.12</version>
+  <vendor email="josborn@belltracy.com" url="http://www.belltracy.com" logo="/org/intellij/plugins/junitgen/logo.png">
+    Bell Tracy, Ltd.
+  </vendor>
+  <idea-version since-build="8000"/>
+
+  <depends optional="true">com.intellij.modules.java</depends>
+
+  <application-components>
+    <component>
+      <implementation-class>org.intellij.plugins.junitgen.JUnitGenerator</implementation-class>
+    </component>
+  </application-components>
+
+  <project-components>
+    <component>
+      <implementation-class>org.intellij.plugins.junitgen.JUnitGenerator</implementation-class>
+    </component>
+  </project-components>
+
+  <actions>
+    <group id="org.intellij.plugins.junitgen.action.JUnitGeneratorMenu"
+           class="org.intellij.plugins.junitgen.action.JUnitGeneratorGroup"
+           popup="true"
+           text="JUnit Test"
+           icon="/org/intellij/plugins/junitgen/logo.png">
+      <add-to-group group-id="GenerateGroup" anchor="after" relative-to-action="JavaGenerateGroup2"/>
+    </group>
+    <group id="org.intellij.plugins.junitgen.action.JUnitGeneratorEditorMenu"
+           popup="true"
+           text="Edit">
+      <reference ref="CutCopyPasteGroup"/>
+      <separator/>
+      <reference ref="ReformatCode"/>
+    </group>
+  </actions>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- configurable extension -->
+    <applicationConfigurable
+            instance="org.intellij.plugins.junitgen.ui.JUnitGeneratorConfigurable$AppConfigurable"/>
+    <projectConfigurable instance="org.intellij.plugins.junitgen.ui.JUnitGeneratorConfigurable$PrjConfigurable"/>
+    <!-- service for the settings -->
+    <applicationService
+            serviceImplementation="org.intellij.plugins.junitgen.ui.JUnitGeneratorConfigurable$AppSettings"/>
+    <projectService
+            serviceImplementation="org.intellij.plugins.junitgen.ui.JUnitGeneratorConfigurable$PrjSettings"/>
+  </extensions>
+
+  <change-notes><![CDATA[
+            <p>This revision adds support for pattern ${PROJECT_BASE} when exporting unit tests.</p>
+            <p>Re-released with java 1.6 compatibility.</p>
+            <p>Previous release notes:</p>
+            <ul>
+            <li><a href="https://code.google.com/p/junit-generator-v2/issues/detail?id=2">https://code.google.com/p/junit-generator-v2/issues/detail?id=2</a>
+            <li><a href="https://code.google.com/p/junit-generator-v2/issues/detail?id=3">https://code.google.com/p/junit-generator-v2/issues/detail?id=3</a>
+            <li><a href="https://code.google.com/p/junit-generator-v2/issues/detail?id=4">https://code.google.com/p/junit-generator-v2/issues/detail?id=4</a>
+            <li><a href="https://code.google.com/p/junit-generator-v2/issues/detail?id=6">https://code.google.com/p/junit-generator-v2/issues/detail?id=6</a>
+            <li><a href="https://code.google.com/p/junit-generator-v2/issues/detail?id=7">https://code.google.com/p/junit-generator-v2/issues/detail?id=7</a>
+            </ul>
+            <br/>
+            <p>Revision 2.0.9 contains the following updates:</p>
+            <ul>
+            <li>Upgraded to newest version of the open api
+            <li>Added project and application settings areas
+            <li>Fixed an issue when overwriting an existing test case
+            <li>The configuration now uses a form based swing dialog
+            <li>Multiple templates can be selected from the menu
+            <li>Various other improvements and code enhancements
+            </ul>
+            ]]>
+  </change-notes>
+</idea-plugin>

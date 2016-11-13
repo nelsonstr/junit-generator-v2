@@ -8,44 +8,79 @@ import java.util.List;
  *
  * @author Jon Osborn
  */
-public class TemplateEntry {
+public class TemplateEntry
+{
 
-    private final List<MethodComposite> methodList;
-    private final List<MethodComposite> privateMethodList;
-    private final List<String> fieldList;
+  private final List<MethodComposite> methodList;
+  private final List<MethodComposite> privateMethodList;
+  private final List<String>          fieldList;
+  private final List<MethodComposite> publicConstructorsCompositeList;
 
-    private String className;
-    private String packageName;
+  private final List<MethodComposite> nonPublicConstructorCompositeList;
 
-    public TemplateEntry(String className,
-                         String packageName,
-                         List<MethodComposite> methodList,
-                         List<MethodComposite> privateMethodList,
-                         List<String> fieldList) {
-        this.className = className;
-        this.packageName = packageName;
-        this.methodList = methodList;
-        this.privateMethodList = privateMethodList;
-        this.fieldList = fieldList;
-    }
 
-    public String getClassName() {
-        return className;
-    }
+  private final List<String> importList;
 
-    public String getPackageName() {
-        return packageName;
-    }
+  private String className;
+  private String packageName;
 
-    public List<String> getFieldList() {
-        return fieldList;
-    }
+  public TemplateEntry(final String className,
+      final String packageName,
+      final List<String> importList,
+      final List<MethodComposite> publicConstructorsCompositeList,
+      final List<MethodComposite> nonPublicConstructorCompositeList,
+      final List<MethodComposite> methodList,
+      final List<MethodComposite> privateMethodList,
+      final List<String> fieldList)
+  {
+    this.className = className;
+    this.packageName = packageName;
+    this.importList = importList;
+    this.publicConstructorsCompositeList = publicConstructorsCompositeList;
+    this.nonPublicConstructorCompositeList = nonPublicConstructorCompositeList;
+    this.methodList = methodList;
+    this.privateMethodList = privateMethodList;
+    this.fieldList = fieldList;
+  }
 
-    public List<MethodComposite> getMethodList() {
-        return methodList;
-    }
+  public String getClassName()
+  {
+    return className;
+  }
 
-    public List<MethodComposite> getPrivateMethodList() {
-        return privateMethodList;
-    }
+  public String getPackageName()
+  {
+    return packageName;
+  }
+
+  public List<String> getFieldList()
+  {
+    return fieldList;
+  }
+
+  public List<MethodComposite> getMethodList()
+  {
+    return methodList;
+  }
+
+  public List<MethodComposite> getPrivateMethodList()
+  {
+    return privateMethodList;
+  }
+
+  public List<MethodComposite> getPublicConstructorsCompositeList()
+  {
+    return publicConstructorsCompositeList;
+  }
+
+  public List<MethodComposite> getNonPublicConstructorCompositeList()
+  {
+    return nonPublicConstructorCompositeList;
+  }
+
+  public List<String> getImportList()
+  {
+    return importList;
+  }
+
 }
