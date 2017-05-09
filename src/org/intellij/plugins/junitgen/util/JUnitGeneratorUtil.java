@@ -1,5 +1,19 @@
 package org.intellij.plugins.junitgen.util;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.swing.Icon;
+
+import org.intellij.plugins.junitgen.JUnitGeneratorContext;
+import org.intellij.plugins.junitgen.bean.JUnitGeneratorSettings;
+import org.intellij.plugins.junitgen.ui.JUnitGeneratorConfigurable;
+
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.application.ApplicationManager;
@@ -14,18 +28,6 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaFile;
 import com.intellij.util.xmlb.XmlSerializerUtil;
-import org.intellij.plugins.junitgen.JUnitGeneratorContext;
-import org.intellij.plugins.junitgen.bean.JUnitGeneratorSettings;
-import org.intellij.plugins.junitgen.ui.JUnitGeneratorConfigurable;
-
-import javax.swing.*;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 /**
@@ -49,6 +51,7 @@ public class JUnitGeneratorUtil {
     public static final Pattern PACKAGE_NAME_PATTERN = Pattern.compile("\\.");
     public static final Pattern FILENAME_PATTERN = Pattern.compile("\\$\\{FILENAME\\}");
     public static final String PATH_PATTERN = "/";
+    private com.intellij.openapi.extensions.AreaInstance areaInstance ;
 
     /**
      * The icon is static so we load it here and once
@@ -189,6 +192,7 @@ public class JUnitGeneratorUtil {
      */
     public static String resolveOutputFileName(JUnitGeneratorContext genCtx, String testClassName)
             throws IOException {
+
         String outputPattern = getInstance(genCtx.getProject()).getOutputFilePattern();
         String sourcePath = getSourcePath(genCtx.getPsiClass(), genCtx.getDataContext());
         String projectBase = genCtx.getProject().getBaseDir().getPath();

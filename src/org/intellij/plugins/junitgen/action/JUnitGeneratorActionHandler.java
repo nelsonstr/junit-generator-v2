@@ -117,6 +117,7 @@ public class JUnitGeneratorActionHandler extends EditorWriteActionHandler
             List<PsiMethod> publicMethodList = new ArrayList<>();
             List<PsiMethod> nonPublicMethodList = new ArrayList<>();
             List<String> fieldList = new ArrayList<>();
+            List<String> mockList = new ArrayList<>();
 
             buildTest(psiClass, publicContructors, nonPublicContructors, publicMethodList, nonPublicMethodList,
                 fieldList);
@@ -131,16 +132,16 @@ public class JUnitGeneratorActionHandler extends EditorWriteActionHandler
             List<MethodComposite> publicConstructorsCompositeList = new ArrayList<>();
             List<MethodComposite> nonPublicConstructorCompositeList = new ArrayList<>();
 
-            processMethods(genCtx, publicMethodList, methodCompositeList);
-            processMethods(genCtx, nonPublicMethodList, nonPublicMethodCompositeList);
-            processMethods(genCtx, publicContructors, publicConstructorsCompositeList);
-            processMethods(genCtx, nonPublicContructors, nonPublicConstructorCompositeList);
+            processMethods(genCtx, publicMethodList, methodCompositeList, mockList);
+            processMethods(genCtx, nonPublicMethodList, nonPublicMethodCompositeList, mockList);
+            processMethods(genCtx, publicContructors, publicConstructorsCompositeList, mockList);
+            processMethods(genCtx, nonPublicContructors, nonPublicConstructorCompositeList, mockList);
 
             String[] split = genCtx.getFile().getImportList().getText().split("\n");
             importList = Arrays.asList(split);
             entryList.add(new TemplateEntry(genCtx.getClassName(false), genCtx.getPackageName(), importList,
                 publicConstructorsCompositeList, nonPublicConstructorCompositeList, methodCompositeList,
-                nonPublicMethodCompositeList, fieldList));
+                nonPublicMethodCompositeList, fieldList, mockList));
             process(genCtx, entryList);
           }
         }
@@ -166,16 +167,16 @@ public class JUnitGeneratorActionHandler extends EditorWriteActionHandler
 
   /**
    * Creates a list of methods with set and get methods combined together.
-   *
-   * @param genCtx              the generator context
+   *  @param genCtx              the generator context
    * @param methodList          list of methods to process
    * @param methodCompositeList the composite list
+   * @param mockList
    */
   private void processMethods(JUnitGeneratorContext genCtx, List<PsiMethod> methodList,
-      List<MethodComposite> methodCompositeList)
+      List<MethodComposite> methodCompositeList, final List<String> mockList)
   {
     List<String> methodNames = new ArrayList<>();
-    List<MethodComposite> methodComposites = toComposites(genCtx, methodList);
+    List<MethodComposite> methodComposites = toComposites(genCtx, methodList, mockList);
 
     if(JUnitGeneratorUtil.getInstance(genCtx.getProject()).isGenerateForOverloadedMethods()) {
       methodComposites = updateOverloadedMethods(genCtx, methodComposites);
@@ -202,20 +203,22 @@ public class JUnitGeneratorActionHandler extends EditorWriteActionHandler
    *
    * @param genCtx     the context
    * @param methodList the method list
+   * @param mockList
    * @return the list of methods
    */
-  private List<MethodComposite> toComposites(JUnitGeneratorContext genCtx, List<PsiMethod> methodList)
+  private List<MethodComposite> toComposites(JUnitGeneratorContext genCtx, List<PsiMethod> methodList,
+      final List<String> mockList)
   {
     final List<MethodComposite> compositeList = new ArrayList<>();
 
     for(final PsiMethod method : methodList) {
-      MethodComposite methodComposite = toComposite(genCtx, method);
+      MethodComposite methodComposite = toComposite(genCtx, method, mockList);
       compositeList.add(methodComposite);
       String textExceptions = method.getThrowsList().getText();
       if(!textExceptions.isEmpty()) {
         String[] exceptions = textExceptions.replace("throws ", "").split(",");
         for(int j = 0; j < exceptions.length; j++) {
-          methodComposite = toComposite(genCtx, method);
+          methodComposite = toComposite(genCtx, method, mockList);
           methodComposite.setExpectedException("(expected = " + exceptions[j] + ".class)");
           methodComposite.setName(methodComposite.getName() + "_throws_" + exceptions[j].trim());
           compositeList.add(methodComposite);
@@ -246,9 +249,11 @@ public class JUnitGeneratorActionHandler extends EditorWriteActionHandler
    *
    * @param genCtx the generator context
    *               * @param method the method in question
+   * @param mockList
    * @return the method composite object
    */
-  private MethodComposite toComposite(final JUnitGeneratorContext genCtx, final PsiMethod method)
+  private MethodComposite toComposite(final JUnitGeneratorContext genCtx, final PsiMethod method,
+      final List<String> mockList)
   {
     final List<String> paramClassList = new ArrayList<>();
     for(PsiParameter param : method.getParameterList().getParameters()) {
@@ -261,7 +266,7 @@ public class JUnitGeneratorActionHandler extends EditorWriteActionHandler
     }
 
     String commentSignature = createSignature(method);
-    List<String> reflectionCode = createReflectionCode(genCtx, method);
+    List<String> reflectionCode = createReflectionCode(genCtx, method, mockList);
 
     //create the composite object to send to the template
     final MethodComposite composite = new MethodComposite();
@@ -275,7 +280,7 @@ public class JUnitGeneratorActionHandler extends EditorWriteActionHandler
     //if the super method is not the same as us, grab the data from that also
     final PsiMethod[] superMethods = method.findSuperMethods();
     if(superMethods.length > 0) {
-      composite.setBase(toComposite(genCtx, superMethods[0]));
+      composite.setBase(toComposite(genCtx, superMethods[0], mockList));
     }
     return composite;
   }
@@ -323,7 +328,8 @@ public class JUnitGeneratorActionHandler extends EditorWriteActionHandler
   }
 
   @NotNull
-  private List<String> createReflectionCode(@NotNull JUnitGeneratorContext genCtx, @NotNull PsiMethod method)
+  private List<String> createReflectionCode(@NotNull JUnitGeneratorContext genCtx, @NotNull PsiMethod method,
+      final List<String> mockList)
   {
     final List<String> code = new ArrayList<>();
     String getMethodText = "\"" + method.getName() + "\"";
@@ -337,7 +343,7 @@ public class JUnitGeneratorActionHandler extends EditorWriteActionHandler
           .concat(CLASS);
 
       parametersConstructor = appendParameter(parametersConstructor, getParameterConstructor(parameterClassName));
-      code.add(initParameter(param, parameterClassName));
+      code.add(initParameter(param, parameterClassName, mockList));
       parametersInstance = appendParameter(parametersInstance, param.getName());
     }
 
@@ -349,22 +355,21 @@ public class JUnitGeneratorActionHandler extends EditorWriteActionHandler
 
     boolean isPublic = method.getModifierList().hasExplicitModifier("public");
     if(method.isConstructor()) {
-      code.add("\t" + className + " " + constructorName + "Instance;");
+
       if(!isPublic) {
         code.add("\ttry {");
         code.add("\t\tfinal Constructor<" + className + "> " + constructorName + " = " + className
             + ".class.getDeclaredConstructor" + "(" + parametersConstructor + ");");
         code.add("\t\t" + constructorName + ".setAccessible(true);");
         code.add(
-            "\t\t" + constructorName + "Instance = " + constructorName + ".newInstance(" + parametersInstance + ");");
+            "\t\tcut = " + constructorName + ".newInstance(" + parametersInstance + ");");
         code.add("\t\t" + constructorName + ".setAccessible(false);");
-        code.add("\t\tAssert.assertNotNull(" + constructorName + "Instance);");
+
         code.add("\t} catch(NoSuchMethodException |IllegalAccessException | InvocationTargetException e) {");
         code.add("\t}");
       }
       else {
-        code.add("\t\t" + constructorName + "Instance = new " + className + "(" + parametersInstance + ")" + ";");
-        code.add("\t\tAssert.assertNotNull(" + constructorName + "Instance);");
+        code.add("\t\t cut = new " + className + "(" + parametersInstance + ")" + ";");
       }
     }
     else {
@@ -393,7 +398,8 @@ public class JUnitGeneratorActionHandler extends EditorWriteActionHandler
   }
 
   @NotNull
-  private String initParameter(@NotNull final PsiParameter param, @NotNull final String parameterClassName)
+  private String initParameter(@NotNull final PsiParameter param, @NotNull final String parameterClassName, @NotNull
+      final List<String> mockList)
   {
     String init;
     if(Parameter.isPrimitiveType(parameterClassName) || "String".equals(parameterClassName)
@@ -401,7 +407,8 @@ public class JUnitGeneratorActionHandler extends EditorWriteActionHandler
       init = getInitPrimitiveParameter(param, parameterClassName, getDefaultValue(parameterClassName));
     }
     else {
-      init = getInitParameter(param, parameterClassName);
+      mockList.add(getMockClasses(param, parameterClassName));
+      init = "// TBD";
     }
     return init;
   }
@@ -417,10 +424,9 @@ public class JUnitGeneratorActionHandler extends EditorWriteActionHandler
   }
 
   @NotNull
-  private String getInitParameter(@NotNull final PsiParameter param, @NotNull final String parameterClassName)
+  private String getMockClasses(@NotNull final PsiParameter param, @NotNull final String parameterClassName)
   {
-    return " " + parameterClassName + " " + param.getName() + "= Mockito.mock(" + removeDiamonds(parameterClassName)
-        + ".class);";
+    return " @Mock\n " + parameterClassName + " " + param.getName() +";";
   }
 
   @NotNull

@@ -1,8 +1,9 @@
 package org.intellij.plugins.junitgen;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.ProjectComponent;
-import org.jetbrains.annotations.NotNull;
 
 
 /**
